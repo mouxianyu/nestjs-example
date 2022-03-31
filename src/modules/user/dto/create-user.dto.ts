@@ -7,25 +7,27 @@ export class CreateUserDto {
 
     @IsString()
     @Matches(/^[a-z][a-z0-9_]{3,30}$/, {
-        message: '账号只能使用小写字母、数字、下划线，第一个字符为小写字母，长度在4-30个字符'
+        message:
+            'The account must contain only lowercase letters, numbers, and hyphens/underscores; The first character should be lowercase letters; 4-30 characters'
     })
     @IsNotEmpty()
     readonly account: string
 
     @IsString()
-    @IsEmail({}, { message: '无效的邮件地址' })
+    @IsEmail({}, { message: 'Invalid email address' })
     @IsNotEmpty()
     readonly email: string
 
     @IsString()
     @Matches(/^((?=\S*?[A-Z])(?=\S*?[a-z])(?=\S*?[0-9]).{5,30})\S$/, {
-        message: '密码至少包含大写字母、小写字母、数字，长度6-30个字符'
+        message:
+            'The password must contain at least uppercase letters and lowercase letters and digits; 6-30 characters'
     })
     @IsNotEmpty()
     readonly password: string
 
     @IsOptional()
-    @IsArray({ message: '权限格式必须为数组' })
-    @IsString({ each: true, message: '权限格式必须为字符串数组' })
+    @IsArray({ message: 'Auth must be array' })
+    @IsString({ each: true, message: 'Auth must be string array' })
     readonly auth: Array<string> = []
 }

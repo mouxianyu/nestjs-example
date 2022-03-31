@@ -1,7 +1,7 @@
 import { IsEmail, IsNotEmpty, Matches, IsArray, IsString, IsOptional, IsEnum } from 'class-validator'
 import { AtLeastOne } from 'src/decorators/parameter'
 import { UserStatus } from 'src/enums/user-status'
-@AtLeastOne('没有数据更新')
+@AtLeastOne('No data to update')
 export class UpdateUserDto {
     @IsString()
     @IsOptional()
@@ -9,21 +9,22 @@ export class UpdateUserDto {
     readonly name: string
 
     @Matches(/^[a-z][a-z0-9_]{3,30}$/, {
-        message: '账号只能使用小写字母、数字、下划线，第一个字符为小写字母，长度在4-30个字符'
+        message:
+            'The account must contain only lowercase letters, numbers, and hyphens/underscores; The first character should be lowercase letters; 4-30 characters'
     })
     @IsString()
     @IsNotEmpty()
     @IsOptional()
     readonly account: string
 
-    @IsEmail({}, { message: '无效的邮件地址' })
+    @IsEmail({}, { message: 'Invalid email address' })
     @IsNotEmpty()
     @IsOptional()
     @IsString()
     readonly email: string
 
-    @IsArray({ message: '权限格式必须为数组' })
-    @IsString({ each: true, message: '权限格式必须为字符串数组' })
+    @IsArray({ message: 'Auth must be array' })
+    @IsString({ each: true, message: 'Auth must be string array' })
     @IsOptional()
     readonly auth: Array<string>
 

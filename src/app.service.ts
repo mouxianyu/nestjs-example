@@ -3,6 +3,6 @@ import { Injectable } from '@nestjs/common'
 @Injectable()
 export class AppService {
     getHello(): string {
-        return '<h1>Milesight IoT</h1>'
+        return '<h1>Hello world!</h1>'
     }
 }

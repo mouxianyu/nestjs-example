@@ -5,7 +5,6 @@ import { ResponseDto } from 'src/dto/response.dto'
 import { omit } from 'lodash'
 import { QueryUserDto } from './dto/query-user.dto'
 import { UpdateUserDto } from './dto/update-user.dto'
-import { AtLeastOne } from 'src/decorators/parameter/at-least-one.decorator'
 
 @Controller('users')
 export class UsersController {
