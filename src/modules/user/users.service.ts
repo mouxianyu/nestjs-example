@@ -1,5 +1,6 @@
-import { Model } from 'mongoose'
+import { Model, ObjectId } from 'mongoose'
 import { Injectable, Inject } from '@nestjs/common'
+import { isEmail } from 'class-validator'
 
 import { CreateUserDto } from './dto/create-user.dto'
 import { User } from './interfaces/users.interface'
@@ -10,8 +11,9 @@ import { UpdateUserDto } from './dto/update-user.dto'
 @Injectable()
 export class UsersService {
     constructor(@Inject('USER_MODEL') private readonly userModel: Model<User>) {}
-    async findAll(): Promise<User[]> {
-        return this.userModel.find().exec()
+
+    async getById(id: ObjectId): Promise<User> {
+        return this.userModel.findById(id).exec()
     }
 
     async findByPage(queryUserDto: QueryUserDto): Promise<PaginationResultDto<User>> {
@@ -27,11 +29,24 @@ export class UsersService {
         return new PaginationResultDto(list, totalCount)
     }
 
+    async getByAccountOrEmail(val: string, selectPwd = false): Promise<User> {
+        const keys = Object.keys(this.userModel.schema.paths).join(' ')
+        const queryObj = isEmail(val) ? { email: val } : { account: val }
+        if (selectPwd) {
+            return this.userModel.findOne(queryObj).select(keys).exec()
+        }
+        return this.userModel.findOne(queryObj).exec()
+    }
+
     async create(createUserDto: CreateUserDto): Promise<User> {
         return this.userModel.create(createUserDto)
     }
 
-    async updateById(id: string, updateUserDto: UpdateUserDto): Promise<unknown> {
-        return this.userModel.updateOne({ _id: id }, updateUserDto)
+    async updateById(id: ObjectId, updateUserDto: UpdateUserDto): Promise<User> {
+        return this.userModel.findByIdAndUpdate(id, updateUserDto, { returnDocument: 'after' }).exec()
+    }
+
+    async deleteById(id: ObjectId): Promise<User> {
+        return this.userModel.findByIdAndDelete(id).exec()
     }
 }

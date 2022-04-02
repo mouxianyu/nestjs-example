@@ -4,6 +4,7 @@ import { AppService } from './app.service'
 import { ConfigModule } from '@nestjs/config'
 import config from './config'
 import { UsersModule } from './modules/user/users.module'
+import { AuthModule } from './modules/auth/auth.module'
 import * as Joi from 'joi'
 @Module({
     imports: [
@@ -15,7 +16,8 @@ import * as Joi from 'joi'
             }),
             envFilePath: `.env.${process.env.NODE_ENV || 'development'}`
         }),
-        UsersModule
+        UsersModule,
+        AuthModule
     ],
     controllers: [AppController],
     providers: [AppService]

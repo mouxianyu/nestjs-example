@@ -1,7 +1,6 @@
-import { MetadataKey } from 'src/enums/metadata-key'
-
+export const AT_LEAST_ONE_KEY = 'custom:at-least-one'
 export function AtLeastOne(message = 'Payload should not be empty'): ClassDecorator {
     return function (target: unknown) {
-        Reflect.defineMetadata(MetadataKey.AtLeastOne, message, target)
+        Reflect.defineMetadata(AT_LEAST_ONE_KEY, message, target)
     }
 }

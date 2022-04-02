@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt'
 import { promisify } from 'util'
 
 const SALT_ROUNDS = 10
+export type UserDocument = User & Document
 
 @Schema({ timestamps: true, versionKey: false })
 export class User extends Document {
@@ -14,7 +15,7 @@ export class User extends Document {
     })
     name: string
 
-    @Prop({ required: true, unique: true, index: true, match: /^[a-z][a-z0-9_]{3,30}$/ })
+    @Prop({ required: true, unique: true, index: true, match: /^[a-z][a-z0-9_-]{3,30}$/ })
     account: string
 
     @Prop({
@@ -37,7 +38,10 @@ export class User extends Document {
 const UserSchema = SchemaFactory.createForClass(User)
 
 UserSchema.set('toJSON', {
-    virtuals: true
+    virtuals: true,
+    transform(doc: any, ret: any): any {
+        delete ret.password
+    }
 })
 
 UserSchema.pre<User>('save', async function (next) {
@@ -52,7 +56,7 @@ UserSchema.pre<User>('updateOne', async function (next) {
     next()
 })
 
-UserSchema.methods.checkPwd = async function (pwd: string) {
-    return await promisify(bcrypt.compare)(pwd, this.password)
+UserSchema.methods.checkPassword = async function (password: string) {
+    return promisify(bcrypt.compare)(password, this.password)
 }
 export { UserSchema }

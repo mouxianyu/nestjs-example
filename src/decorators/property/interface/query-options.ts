@@ -1,4 +1,4 @@
-import { QueryType } from 'src/enums/query-type'
+import { QueryType } from '../query-option.decorator'
 
 export interface QueryOptions {
     type?: QueryType

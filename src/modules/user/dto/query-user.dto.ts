@@ -1,7 +1,6 @@
 import { IsNotEmpty, IsString, IsOptional, IsInt } from 'class-validator'
 import { BaseQueryDto } from 'src/dto/base-query.dto'
-import { QueryOption } from 'src/decorators/property'
-import { QueryType } from 'src/enums/query-type'
+import { QueryOption, QueryType } from 'src/decorators/property'
 export class QueryUserDto extends BaseQueryDto {
     @QueryOption({ type: QueryType.Like })
     @IsString()

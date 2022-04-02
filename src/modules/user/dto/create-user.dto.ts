@@ -6,7 +6,7 @@ export class CreateUserDto {
     readonly name: string
 
     @IsString()
-    @Matches(/^[a-z][a-z0-9_]{3,30}$/, {
+    @Matches(/^[a-z][a-z0-9_-]{3,30}$/, {
         message:
             'The account must contain only lowercase letters, numbers, and hyphens/underscores; The first character should be lowercase letters; 4-30 characters'
     })
