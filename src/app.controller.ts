@@ -1,14 +1,14 @@
-import { Body, Controller, Get, Post, Request } from '@nestjs/common'
+import { Body, Controller, Get, Post, Request, Version, VERSION_NEUTRAL } from '@nestjs/common'
 import { AppService } from './app.service'
 import { AuthService } from './modules/auth/auth.service'
 import { ResponseDto } from './dto/response.dto'
 import { SkipAuth } from './decorators/skip-auth.decorator'
 import { LoginDto } from './modules/auth/dto/login.dto'
-
 @Controller()
 export class AppController {
     constructor(private readonly appService: AppService, private readonly authService: AuthService) {}
 
+    @Version(VERSION_NEUTRAL)
     @SkipAuth()
     @Get()
     getHello(): string {
