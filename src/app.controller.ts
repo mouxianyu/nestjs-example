@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Post, Request, Version, VERSION_NEUTRAL } from '@nestjs/common'
+import { Body, Controller, Get, Post, Put, Request, Version, VERSION_NEUTRAL } from '@nestjs/common'
 import { AppService } from './app.service'
 import { AuthService } from './modules/auth/auth.service'
 import { ResponseDto } from './dto/response.dto'
 import { SkipAuth } from './decorators/skip-auth.decorator'
 import { LoginDto } from './modules/auth/dto/login.dto'
+import { RefreshTokenDto } from './modules/auth/dto/refresh-token.dto'
 @Controller()
 export class AppController {
     constructor(private readonly appService: AppService, private readonly authService: AuthService) {}
@@ -19,6 +20,13 @@ export class AppController {
     @Post('login')
     async login(@Body() loginDto: LoginDto): Promise<ResponseDto<unknown>> {
         const data = await this.authService.login(loginDto)
+        return ResponseDto.success(data)
+    }
+
+    @SkipAuth()
+    @Put('token')
+    async refreshToken(@Body() refreshTokenDto: RefreshTokenDto): Promise<ResponseDto<unknown>> {
+        const data = await this.authService.createAccessTokenByRefreshToken(refreshTokenDto)
         return ResponseDto.success(data)
     }
 
