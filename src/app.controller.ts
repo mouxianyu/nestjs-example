@@ -34,4 +34,10 @@ export class AppController {
     async getProfile(@Request() req): Promise<ResponseDto<unknown>> {
         return ResponseDto.success(req.user)
     }
+
+    @SkipAuth()
+    @Get('routes')
+    async getRoutes(): Promise<ResponseDto<unknown>> {
+        return ResponseDto.success({ info: [] })
+    }
 }
